@@ -3,13 +3,32 @@
 This repo contains the pip install package for Quantized Neural Network (QNN) on PYNQ using a Multi-Layer Offload (MO) architecture.
 Two different overlays are here included, namely W1A2 (1 bit weights, 2 bit activations) and W1A3 (1 bit weights, 3 bit activations), executing in the Programmable Logic 1 Convolutional layer and 1 (optional) Max Pool layer.
 
+## Configuration for Internet on the PYNQ
+To get an internet connection on the PYNQ by just connecting it to a PC (Windows - via an ethernet connection or ethernet USB Adapter) you can set up the following:
+- Set the Ethernet Connection on your PC to a static IP Adress (https://pynq.readthedocs.io/en/v2.0/appendix.html#assign-your-computer-a-static-ip) - anything in the range of 192.168.2.1-255 that's not 99 will work
+- On the PYNQ replace the existing eth0 configuration found unter /etc/network/interfaces.d/eth0 with the following:
+
+```shell
+auto eth0
+iface eth0 inet dhcp
+
+auto eth0:1
+iface eth0:1 inet static
+address 192.168.2.99
+netmask 255.255.255.0
+```
+
+- now go to your main internet connection on your PC -> e.g. ethernet0  and select 'Freigabe' select the pynq internet connection and share the connection
+- If you do this for the first time you will get a message that the ip adress will be changed. If this address is different from the range of adresses (192.168.2.1-255) you have to configure your windows registers to map to the correct address - here should be a link but I can't find it. - 
+
+
 ## Quick Start
 
 In order to install it on your PYNQ board, connect to the board, open a terminal and type:
 
 ```shell
 # (on PYNQ v2.3 only)
-sudo pip3 install git+https://github.com/Xilinx/QNN-MO-PYNQ.git
+sudo pip3.6 install git+https://github.com/Xilinx/QNN-MO-PYNQ.git
 ```
 
 NOTE: The board has to be connected to the internet.
